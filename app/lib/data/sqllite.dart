@@ -7,7 +7,8 @@ class SqliteConnection {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
     return sql.openDatabase(
-      'D:\\UNC_ENG_SW_2022\\5 fase\\4 Desenvolvimento Mobile\\Trabalho\\dataservicos.db',
+      'C:\\Users\\Cauã Graff\\Documents\\dataservicos.db',
+      // 'D:\\UNC_ENG_SW_2022\\5 fase\\4 Desenvolvimento Mobile\\Trabalho\\dataservicos.db',
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database, version);
@@ -24,5 +25,15 @@ class SqliteConnection {
         endereco TEXT
       )
       """);
+    await database.execute('''
+      CREATE TABLE servicos(
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        cliente TEXT,
+        descricao TEXT,
+        data TEXT,
+        quantidadeHoras REAL,
+        valorUnitario REAL
+      )
+    ''');
   }
 }

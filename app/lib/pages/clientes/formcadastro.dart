@@ -23,9 +23,6 @@ class _CadastroClientesPageState extends State<CadastroClientesPage> {
         emailController.text, enderecoController.text);
     Navigator.of(context).pushNamed('/clientes');
   }
-List listar(Bl)
-List<Map<String, dynamic>> clientes = await DatabaseHelper.listarClientes();
-  print('Clientes: $clientes');
 
   @override
   Widget build(BuildContext context) {

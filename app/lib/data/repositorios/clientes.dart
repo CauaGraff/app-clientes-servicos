@@ -1,18 +1,10 @@
 import 'package:app/data/sqllite.dart';
 
 class ClienteRepository {
-  void listar() async {
+  Future<List<Map<String, dynamic>>> getClientes() async {
     final sqlite = SqliteConnection();
     final connection = await sqlite.db();
-    List<Map<String, Object?>> usuarios = await connection.query('clientes');
-
-    for (final usuario in usuarios) {
-      int id = int.parse(usuario['id'].toString());
-      String nome = usuario['nome'].toString();
-      String telefone = usuario['telefone'].toString();
-      String email = usuario['email'].toString();
-      String endereco = usuario['endereco'].toString();
-    }
+    return await connection.query('clientes');
   }
 
   Future<void> salvar(
@@ -40,9 +32,13 @@ class ClienteRepository {
         where: 'id = 1');
   }
 
-  void deletar() async {
+  Future<void> deletar(int id) async {
     final sqlite = SqliteConnection();
     final connection = await sqlite.db();
-    await connection.delete('users', where: 'id = 1');
+    await connection.delete(
+      'clientes',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 }
