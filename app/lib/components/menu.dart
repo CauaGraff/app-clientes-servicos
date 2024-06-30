@@ -17,7 +17,7 @@ class ESMenu extends StatelessWidget {
         ),
         ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/tiposservicos');
+              Navigator.of(context).pushNamed('/servicos');
             },
             child: const Text('Serviços')),
         const SizedBox(

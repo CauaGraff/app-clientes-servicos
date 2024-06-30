@@ -1,27 +1,28 @@
 import 'package:app/components/container.dart';
-import 'package:app/data/repositorios/clientes.dart';
+import 'package:app/data/repositorios/servicos.dart';
+import 'package:app/data/repositorios/servicos.dart';
 import 'package:flutter/material.dart';
 
-class ListaClientesPage extends StatefulWidget {
-  const ListaClientesPage({super.key, required this.title});
+class ListaServicosPage extends StatefulWidget {
+  const ListaServicosPage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<ListaClientesPage> createState() => _ListaClientesPageState();
+  State<ListaServicosPage> createState() => _ListaServicosPageState();
 }
 
-class _ListaClientesPageState extends State<ListaClientesPage> {
-  late Future<List<Map<String, dynamic>>> _clientes;
+class _ListaServicosPageState extends State<ListaServicosPage> {
+  late Future<List<Map<String, dynamic>>> _servicos;
 
   @override
   void initState() {
     super.initState();
-    _fetchClientes();
+    _fetchServicos();
   }
 
-  void _fetchClientes() {
-    _clientes = ClienteRepository().getClientes();
+  void _fetchServicos() {
+    _servicos = ServicosRepository().getServicos();
   }
 
   @override
@@ -35,40 +36,39 @@ class _ListaClientesPageState extends State<ListaClientesPage> {
         children: [
           ElevatedButton(
             onPressed: () {
-              Navigator.of(context).pushNamed('/clientes/cadastrar');
+              Navigator.of(context).pushNamed('/servicos/cadastrar');
             },
             child: const Text('Cadastrar'),
           ),
           Expanded(
             child: FutureBuilder<List<Map<String, dynamic>>>(
-              future: _clientes,
+              future: _servicos,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                  return Center(child: Text('No clients found.'));
+                  return Center(child: Text('No servicos found.'));
                 } else {
-                  final clientes = snapshot.data!;
+                  final servicos = snapshot.data!;
                   return ListView.builder(
-                    itemCount: clientes.length,
+                    itemCount: servicos.length,
                     itemBuilder: (context, index) {
-                      final cliente = clientes[index];
+                      final servico = servicos[index];
                       return ListTile(
-                        title: Text(
-                            '${cliente['nome']} - ${cliente['telefone']} - ${cliente['email']}'),
-                        subtitle: Text(cliente['endereco']),
+                        title: Text('${servico['cliente']}'),
+                        subtitle: Text(servico['descricao']),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               icon: Icon(Icons.delete),
                               onPressed: () async {
-                                await ClienteRepository()
-                                    .deletar(cliente['id']);
+                                await ServicosRepository()
+                                    .deletar(servico['id']);
                                 setState(() {
-                                  _fetchClientes();
+                                  _fetchServicos();
                                 });
                               },
                             ),

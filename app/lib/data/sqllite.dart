@@ -7,8 +7,8 @@ class SqliteConnection {
     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
     return sql.openDatabase(
-      'C:\\Users\\Cauã Graff\\Documents\\dataservicos.db',
-      // 'D:\\UNC_ENG_SW_2022\\5 fase\\4 Desenvolvimento Mobile\\Trabalho\\dataservicos.db',
+      // 'C:\\Users\\Cauã Graff\\Documents\\dataservicos.db', // PC
+      'D:\\UNC_ENG_SW_2022\\5 fase\\4 Desenvolvimento Mobile\\Trabalho\\dataservicos.db', //NOTE
       version: 1,
       onCreate: (sql.Database database, int version) async {
         await createTables(database, version);
