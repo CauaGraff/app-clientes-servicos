@@ -1,5 +1,3 @@
-import 'package:app/components/container.dart';
-import 'package:app/data/repositorios/servicos.dart';
 import 'package:app/data/repositorios/servicos.dart';
 import 'package:flutter/material.dart';
 
@@ -52,30 +50,45 @@ class _ListaServicosPageState extends State<ListaServicosPage> {
                   return Center(child: Text('No servicos found.'));
                 } else {
                   final servicos = snapshot.data!;
-                  return ListView.builder(
-                    itemCount: servicos.length,
-                    itemBuilder: (context, index) {
-                      final servico = servicos[index];
-                      return ListTile(
-                        title: Text('${servico['cliente']}'),
-                        subtitle: Text(servico['descricao']),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () async {
-                                await ServicosRepository()
-                                    .deletar(servico['id']);
-                                setState(() {
-                                  _fetchServicos();
-                                });
-                              },
+                  return SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      columns: const [
+                        DataColumn(label: Text('ID')),
+                        DataColumn(label: Text('Cliente')),
+                        DataColumn(label: Text('Descrição')),
+                        DataColumn(label: Text('Data')),
+                        DataColumn(label: Text('Quantidade de Horas')),
+                        DataColumn(label: Text('Valor Unitário')),
+                        DataColumn(label: Text('Ações')),
+                      ],
+                      rows: servicos.map((servico) {
+                        return DataRow(cells: [
+                          DataCell(Text(servico['id'].toString())),
+                          DataCell(Text(servico['cliente'])),
+                          DataCell(Text(servico['descricao'])),
+                          DataCell(Text(servico['data'])),
+                          DataCell(Text(servico['quantidadeHoras'].toString())),
+                          DataCell(Text(servico['valorUnitario'].toString())),
+                          DataCell(
+                            Row(
+                              children: [
+                                IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () async {
+                                    await ServicosRepository()
+                                        .deletar(servico['id']);
+                                    setState(() {
+                                      _fetchServicos();
+                                    });
+                                  },
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
-                    },
+                          ),
+                        ]);
+                      }).toList(),
+                    ),
                   );
                 }
               },
